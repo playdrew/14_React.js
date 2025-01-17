@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>class-type-component</title>
+            <!-- https://ko.legacy.reactjs.org/docs/cdn-links.html -->
+            <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+            <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+            <!-- https://babeljs.io/docs/babel-standalone -->
+            <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+        // 컴포넌트는 한군데만 수정하면 다 수정된다고합니다. 끌고오면 필요한데다가 호출 메소드 클래스 같은 중복되는 느낌
+
+        /*
+            클래스 형태의 컴포넌트 
+            ES6 에서 제공되는 클래스 문법으로 렌더링 컴포넌트를 정의하는
+            방법이다.
+            내부에 render() 함수는 반드시 작성되어야 하며,
+            render 함수 내부의 return 값은 엘리먼트들을 정의한다.
+
+            JSX 를 이용하여 엘리먼트를 무진장 만들면 되지만 ,
+            컴포넌트를 굳이 사용하는 이유는 중복되는 엘리먼트를
+            추상화하여 컴포넌트로 작성하고
+            작성된 컴포넌트를 재사용하기 위함이다.
+        */
+
+        class Title extends React.Component{
+            render(){ // 우리가 보여줄 녀석을 render에서 작성하는 것입니다.
+                return (
+                    <h1>Class 엘리먼트 등장이요~</h1>
+                )
+            } 
+        }
+
+        // 렌더함수에는 element가 들어간다. 클래스형 컴포넌트를 엘리먼트로 만들줘야해요 render(React.createElement(Title)); = render(<Title/>);
+
+        /* 
+            render() 함수는 엘리먼트를 전달하는 곳이다.
+            따라서 컴포넌트를 화면에 보여줄 때 엘리먼트화를 해야하는데
+            쉬운방법이
+            1. 앞글자는 대문자(why?) -> 앞글자가 대문자가 아니면 html태그로 인식하기 때문에 대문자
+            2. 닫기 태그도 존재해야 한다.
+            3. 클래스 이름과 동일해야한다.
+        */
+        ReactDOM.createRooot(document.getElementById('root')).render(<Title/>);
+    </script>
+
+</body>
+</html>

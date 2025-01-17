@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>function-type-component</title>
+                <!-- https://ko.legacy.reactjs.org/docs/cdn-links.html -->
+                <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+                <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+                <!-- https://babeljs.io/docs/babel-standalone -->
+                <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+        // 여기도 클래스와 마찬가지로 대문자 
+        function Title(){
+            return(
+                <h1>Function 타입의 엘리먼트</h1>
+            ); // 함수는 리턴하는데 엘리먼트를 리턴합니다.
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<Title/>);
+    </script>
+
+    <!-- 컴포넌트들은 나중에 조립한다고 했는데 조립을 해볼께요 -->
+    
+</body>
+</html>

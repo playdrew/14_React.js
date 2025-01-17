@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>conditional-rendering</title>
+        <!-- https://ko.legacy.reactjs.org/docs/cdn-links.html -->
+        <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+        <!-- https://babeljs.io/docs/babel-standalone -->
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+
+        // prompt 로 넘어오는 값은 문자열이기 때문에 정수로 파싱
+        const answer = parseInt(prompt("리액트가 재밌나요? \n1.재미있다 \n2.어렵다"));
+
+        console.log(answer);
+
+        // 1. 랜더링 시 조건 비교 후 조건부 렌더링하기(조건식이 간단할 때 사용)
+        // const positive = <h1>앞으로 더 짜릿할 겁니다.ㅎㅎㅎㅎ</h1>
+        // const negative = <h1>복습만이 살 길입니다. 파이팅</h1>
+
+        // root.render(
+        //     (answer === 1) ? positive : negative
+        // );
+
+        // 2. JSX 내에서 조건부 엘리먼트 생성하기
+        // 2-1. if 문으로 조건부 생성 - 안 쓴다고 생각하기 why? let 을 쓰기 때문에 
+        // let element;
+        // if(answer === 1){
+        //     element = <h1>앞으로 더 재밌어진다!!!!!</h1>
+        // }else{
+        //     element = <h1>천천히 해봅시다!!!!!</h1>
+        // }
+
+        // let은 상수가 아니에요 재할당이 가능하고 값을 언제든지 바뀜 자바스크립트는 파일이 동적으로 생성되기에 위험함
+        // 2-2. 삼항연산자로 조건부 엘리먼트 생성(const 의 장점, 삼항 연산자때문에 많이 사용)
+        // const element = (answer === 1 ) ? (
+        //     <h1>안전벨트 꽉 매십쇼</h1>
+        // ) : (
+        //     <h1>천천히 가겠습니다.</h1>
+        // )
+
+        // 2-3. && 연산자를 이용한 조건부 엘리먼트 생성(조건이 맞을 때만 엘리먼트 보여줄때)
+        // 앞이 false면 뒤에 보지도 않음 
+        // const element = answer === 1 && <h1>앞으로도 재밌을 겁니다~~~~~</h1>
+
+        // console.log("element",element);
+
+        /*
+            주의점
+            flase 조건을 가지고 렌더링을 하는 경우에 조건에 일치하지 않으면
+            렌더링되는 요소가 없지만,
+            0의 경우에는 Falsy 한 값임에도 조건부 엘리먼트 생성을 하게 되면
+            0을 반환하게 된다.
+            Falsy 란 ? 
+            - null, undefined , 0 , NaN , '' 등등이 있다. 이를 제외하면 참값
+        */
+
+        // 0은 거짓된 값이므로 
+        const num = 0;
+
+        // 확실하게 false or true 방법이 !! 부정을 2번 하게 되면
+        // 값을 논리형으로 확실히 바꿀수있다.
+        console.log(!!num) // !num 은 true 이고 !!num은 확실하게 falsy하게 만드는 방법 0이라는 값에서요
+
+        const element = num && <h1>Truthy 일 때만 보이는 엘리먼트</h1> // 얘는 0이 나오는데 확실하게 falsy 하게 만드는 방법
+        
+        root.render(element);
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!-- 속성 입니다. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>attribute</title>
+            <!-- https://ko.legacy.reactjs.org/docs/cdn-links.html -->
+            <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+            <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+            <!-- https://babeljs.io/docs/babel-standalone -->
+            <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+            <style>
+                #title{
+                    background-color: red;
+                }
+            </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+        /*
+            JSX 문법을 이용해 엘리먼트 정의 시 attribute 정의 
+            주의사항은 class 속성은 className 으로 해야 된다.
+            또한 이벤트 관련 속성은 CamelCase이다.
+            onclick => onClick
+
+            JSX 문법에서 속성 값을 부여하는 방식은
+            1. 문자열로 속성값 정의
+            2. Javascript 표현식 ({})사용
+        */
+       
+        // 1. 문자열로 정의
+        // const element = <h1 id='title' onClick='hello'>Hello</h1>
+        // ReactDOM.createRoot(document.getElementById('root')).render(element);
+
+        // 2. 자바스크립트 표현식
+        const id = "title";
+        const className = 'hi';
+
+        const element = <h1 id={id} className={className} onClick={test}>Hello!!</h1>
+
+        function test(){
+            alert('클릭했니?');
+        }
+        ReactDOM.createRoot(document.getElementById('root')).render(element);
+    </script>
+    
+</body>
+</html>

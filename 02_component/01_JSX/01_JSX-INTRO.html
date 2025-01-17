@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSX-INTRO</title>
+    <!-- https://ko.legacy.reactjs.org/docs/cdn-links.html -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- https://babeljs.io/docs/babel-standalone -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        /*
+            JSX 란?
+            자바스크립트를 XML 화 => <> 태그 문법을 자바스크립트처럼 읽겠다.
+            createElement 를 이용해 엘리먼트를 만들게 되면
+            복잡하기도 하고, 가독성이 매우 떨어진다. 
+            따라서 리액트팀은 엘리먼트를 생성하는 방법으로 JSX 문법을 제공한다. 
+            자바스크립트를 확장한 문법으로서 xml 즉 태그를 그대로 사용할 수 있는
+            장점을 가지고 있다.
+
+            단, JSX는 공식적인 js문법이 아니다.
+            따라서 JSX 를 번역할 수 있는 바벨이라는 번역기가 필요하다.
+            // const helloElement = React.createElement("h1", {className : "hi", id: "hi"}, "hello world!!");과 같은 아래 문장
+        */
+
+        const helloElement = <h1 class="hi">안녕하세요!!</h1>
+        ReactDOM.createRoot(document.getElementById('root')).render(helloElement);
+    </script>
+</body>
+</html>
