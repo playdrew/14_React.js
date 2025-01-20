@@ -38,37 +38,37 @@
                                     상태를 변경하는 것이 이 함수내에서 반영되지는 않는다.
                                     메모리에서만 임시로 변경된 상태를 가지고 해당 함수가 종료되면
                                     마지막 setState 함수만 변경된 내역으로 반영을 한다.*/
-                                console.log(`setState 이전 number 값: ${this.state.number}`);
-                                this.setState({number:number+1}) ;
-                                console.log(`setState 이후 number 값: ${this.state.number}`)
-                                this.setState({number:this.state.number+1})
-                                onsole.log(`setState 최종 number 값: ${this.state.number}`)
+                                // console.log(`setState 이전 number 값: ${this.state.number}`);
+                                // this.setState({number:number+1}) ;
+                                // console.log(`setState 이후 number 값: ${this.state.number}`)
+                                // this.setState({number:this.state.number+1})
+                                // onsole.log(`setState 최종 number 값: ${this.state.number}`)
                                 /*
                                     state 의 변화를 누적해서 감지하기 위해서는 setState 에 콜백함수
                                     를 넘기고 prevState 를 이용하면 된다 prevState 는 이전의 결과를 
                                     가지고 있는 것으로서 값의 변화를 누적해서 반영할 수 있다.
                                 */
-                            //    this.setState((prevState,props)=>{
-                            //     console.log('prev?',prevState)
-                            //     console.log('props?',props)
-                            //     return {
-                            //         number : prevState.number+1
-                            //     };
-                            //    });
-                            //    this.setState((prevState,props)=>{
-                            //     console.log('prev?',prevState)
-                            //     console.log('props?',props)
-                            //     return {
-                            //         number : prevState.number+1
-                            //     };
-                            //    });
-                            //    this.setState((prevState,props)=>{
-                            //     console.log('prev?',prevState)
-                            //     console.log('props?',props)
-                            //     return {
-                            //         number : prevState.number+1
-                            //     };
-                            //    });
+                               this.setState((prevState,props)=>{
+                                console.log('prev?',prevState)
+                                console.log('props?',props)
+                                return {
+                                    number : prevState.number+1
+                                };
+                               });
+                               this.setState((prevState,props)=>{
+                                console.log('prev?',prevState)
+                                console.log('props?',props)
+                                return {
+                                    number : prevState.number+1
+                                };
+                               });
+                               this.setState((prevState,props)=>{
+                                console.log('prev?',prevState)
+                                console.log('props?',props)
+                                return {
+                                    number : prevState.number+1
+                                };
+                               });
                             }}
                         >+1</button>
                     </>
