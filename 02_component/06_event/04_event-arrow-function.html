@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>event-arrow-function</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/prop-types@15.8.1/prop-types.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+        class EventCompoent extends React.Component{
+
+            state = {
+                inputMessage : ''
+            };
+
+            // 일반적인 함수와 화살표 함수의 가장 큰 차이점은
+            // 화살표 함수는 자동으로 this 를 바인딩 해준다.
+            // 따라서 우리가 생성자를 통해 bind하는 과정을 생략해도
+            // this 는 컴포넌트 자기자신을 가르키게 된다.
+
+            onChangeHandler = (e) => {
+                    this.setState({
+                        inputMessage : e.target.value
+                    })
+                }
+            
+            onClickHandler = () => {
+                alert(this.state.inputMessage)
+                this.setState({
+                    inputMessage : ''
+                })
+            }
+
+            render(){
+
+
+                return(
+                    <>
+                        <h1>이벤트 핸들링</h1>
+                        <input 
+                            type="text"
+                            placeholder='텍스트 입력해주세요'
+                            onChange={this.onChangeHandler}
+                            value = {this.state.inputMessage}
+                        />
+                        <button onClick={this.onClickHandler}>제출</button>
+                    </>
+                )
+            }
+        }
+
+        ReactDOM.createRoot(document.getElementById('root'))
+                .render(<EventCompoent/>);
+    </script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>event-separate</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/prop-types@15.8.1/prop-types.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+        class EventCompoent extends React.Component{
+
+            state = {
+                inputMessage : ''
+            };
+
+            /*
+                함수가 호출 될 때 this 는 호출부에 따라 결정된다.
+                따라서 클래스의 함수가 특정 html 요소의 이벤트 핸들러가 되는
+                순간, 함수와 this의 관계가 끊겨져서 this 를 모르는 상태가 된다.
+                따라서 함수를 constructor 에 this와 바인딩을 하는 작업이 필요하게 된다.
+                바인딩을 하지 않게 되면 , this 는 undefined 가 된다.
+            */
+           // 외부정의함수를 html 요소에 이벤트 등록하는 순간 this를 알아차릴수 없음 돔요소 클래스컴포넌트인지?
+           // 생성자에 함수들을 등록해라라는 것이에요
+
+            constructor(props){
+
+                super(props);
+
+                // 컴포넌트에 onClickHandler 등록
+                this.onChangeHandler = this.onChangeHandler.bind(this)
+                this.onClickHandler = this.onClickHandler.bind(this)
+            }
+
+            onChangeHandler(e){
+                    this.setState({
+                        inputMessage : e.target.value
+                    })
+                }
+            
+            onClickHandler(){
+                alert(this.state.inputMessage)
+                this.setState({
+                    inputMessage : ''
+                })
+            }
+
+            render(){
+
+
+                return(
+                    <>
+                        <h1>이벤트 핸들링</h1>
+                        <input 
+                            type="text"
+                            placeholder='텍스트 입력해주세요'
+                            onChange={this.onChangeHandler}
+                            value = {this.state.inputMessage}
+                        />
+                        <button onClick={this.onClickHandler}>제출</button>
+                    </>
+                )
+            }
+        }
+
+        ReactDOM.createRoot(document.getElementById('root'))
+                .render(<EventCompoent/>);
+    </script>
+</body>
+</html>
