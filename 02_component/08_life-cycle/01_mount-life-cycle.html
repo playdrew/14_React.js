@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mount-life-cycle</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/prop-types@15.8.1/prop-types.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <!-- 
+        컴포넌트의 라이프 사이클 메소드는 총 9가지 있다.
+        라이프 사이클 메소드는 클래스형 컴포넌트에서만 확인 할 수 있으며,
+        3가지 카테고리인 마운트 시점, 업데이트 시점, 언마운트 시점으로
+        나뉘게 된다.
+
+        마운트 : DOM 이 생성되고, 우리 화면에 나타나는 것을 Mount 라고 한다.
+        
+        업데이트 : 컴포넌트의 상태가 변하는 것을 의미한다.
+        - props 의 변경, state 의 변경 , 부모 컴포넌트의 리렌더링
+        
+        언마운트 : 컴포넌트를 화면에서 제거하는 것(DOM 에서 제거)
+        
+        마운트 시 동작 순서
+        constructor(생성자) -> getDerivedStateFromProps -> render -> component 순서로 이루어진다. // prop는 전달받고 스태이트는 상태를 관리하는 녀석 state를 운전할거에요 props 부터
+        // 부모가 자식에 값을 전달해주는데 뭐로 전달하면 props로 자식은 내가 관리하는 state로 바꿔줄수있어요. 부모가 전달하는 props로 내가 나의 상태로 바꾸겠다라는 것이에요 derived
+    -->
+
+    <script type="text/babel">
+
+        class MountTest extends React.Component{
+
+            // 생성자 함수
+            // 1. 컴포넌트가 리액트 돔에 렌더링(인스턴스화) 되기전
+            // 호출되는 생성자 메소드이다.
+            constructor(props){
+                console.log('생성자 함수 호출됨...');
+                console.log('생성시 전달 받는 props :' , props);
+                super(props);
+
+                /*
+                    컴포넌트를 만들 때 처음으로 시작되며,
+                    생성자 내에서 컴포넌트가 관리할 State 를 초기화
+                    할 수 있다.
+                    getDerivedStateFromProps 메소드를 사용하기 위해서는 
+                    반드시 state를 초기화 해야 사용가능하다.
+                */
+
+                this.state = {
+                    text : '초기값'
+                }
+            }
+
+            // 2. props 에 있는 값을 컴포넌트가 관리하는 state에 넣을 때 사용하는 메소드
+            static getDerivedStateFromProps(props,state){
+                console.log('getDerivedStateFromProps 함수 동작함...');  // props의 값을 state에 넣을 거에요 // props는 state로 변환
+                console.log('props',props);
+                console.log('state :',state);
+
+                return {text : props.names} // props에 관리하고 있는 text라는 키에 // 원래는 초기값 부모로 부터 전달받은 값을 state로 초기화
+                 // return null; // 만약 전달받은 props 를 state 를 바꿀 필요가 없다면 null 리턴 // 부모가 5라는 값을 주는데 자식은 3인데 5라는 값으로 바꿔야 한다면
+                // return 구문은 전달받은 값을 우리가 관리하는 state객체로 반환을 해준다.
+            }
+
+            // 3. render() : 리액트 엘리먼트를 가상돔으로 구성하고, 실제 렌더트리까지 구성하는
+            // 시점에 호출되는 메소드이다.
+            render(){  // 클래스에서 렌더함수는 필수다 
+                console.log('render 함수 호출됨...');
+
+                /*
+                    렌더링 화면에 보여줄 형태를 반환한다.
+                    라이프 사이클 메소드 중 유일한 필수 메소드 이다.
+                    render 함수는 this.props 와 this.state 에 접근 가능
+                */
+
+                // 주의점
+                // 렌더 함수 내에서는 setState 하면 무한루프를 맞이한다.
+                // 업데이트 메소드 참조
+                // this.setState({
+                //     text : '수정'
+                // });
+
+                return (
+                    <h1>현재 관리중인 State : {this.state.text}</h1>
+                );
+            }
+
+            // 4. 컴포넌트가 웹 상(우리 눈에) 나타난 후 호출되는 메소드
+            componentDidMount(){
+                console.log('componentDidMount 동작함...');
+                // 컴포넌트가 나온 후 동작하는 코드들의 특징은 이렇다.
+                // setTimeout , setInterval , API 호출 // 시간이 오래걸리는 작업을 먼저 화면을 뿌려준다음에 그 이후에 값을 넣어주는 역할 //api 게시글조회한다해요 3000개 기다리는 시간 존재 그럼 화면상에 html틀이 나타나야하는데 해당하는 메소드가 존재하지 않는다면 3000조회될때까지 하얀색화면 사용자입장에선 불편 // 우리가 만든 restapi 호출을 여기서 해요
+            }
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<MountTest names = "조평훈"/>) // 해당하는 컴포넌트는 렌더링시에 names라는 props를 전달받으니 생성자는 무조건 생성
+    </script>
+</body>
+</html>

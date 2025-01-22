@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const { useState } = React;
+
+      function App() {
+        const [text, setText] = useState(""); // 입력 필드 상태
+        const [list, setList] = useState([]); // 목록 상태
+        const [listId, setListId] = useState(1); // ID 상태
+
+        // 입력 변경 핸들러
+        const onChangeHandler = (e) => setText(e.target.value);
+
+        // 항목 추가 핸들러
+        const onClickHandler = () => {
+          if (text.trim() !== "") {
+            const newItem = {
+              id: listId,
+              detail: text,
+              checked: false,
+            };
+
+            setList([...list, newItem]);
+            setListId(listId + 1);
+            setText("");
+          }
+        };
+
+        // 체크박스 상태 변경 핸들러
+        const toggleChecked = (id) => {
+          const updatedList = list.map((item) =>
+            item.id === id ? { ...item, checked: !item.checked } : item
+          );
+          setList(updatedList);
+        };
+
+        // 특정 항목 삭제 핸들러
+        // 특정 항목 삭제 핸들러 (체크된 항목만 삭제)
+        const removeItem = (id) => {
+          const updatedList = list.filter(
+            (item) => item.id !== id || !item.checked
+          );
+          setList(updatedList);
+        };
+
+        const currentDate = new Date().toLocaleDateString("ko-KR", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        });
+
+        // 목록 렌더링
+        const detailList = list.map((item) => (
+          <li key={item.id} style={{ display: "flex", alignItems: "center" }}>
+            <input
+              type="checkbox"
+              checked={item.checked}
+              onChange={() => toggleChecked(item.id)}
+            />
+            <span
+              style={{
+                marginLeft: "10px",
+                flex: 1,
+                textDecoration: item.checked ? "line-through" : "none",
+              }}
+            >
+              {item.detail}
+            </span>
+            <button
+              onClick={() => removeItem(item.id)}
+              style={{
+                marginLeft: "10px",
+                backgroundColor: "red",
+                color: "white",
+                border: "none",
+                cursor: "pointer",
+                borderRadius: "50%",
+                width: 30,
+                height: 30,
+              }}
+            >
+              X
+            </button>
+          </li>
+        ));
+
+        return (
+          <>
+            <header>
+              <div
+                style={{
+                  height: 100,
+                  backgroundColor: "black",
+                  color: "white",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <h1>
+                  오늘의 할일! <span>{currentDate}</span>
+                </h1>
+              </div>
+            </header>
+            <main>
+              <h3>ToDo-List</h3>
+              <div>
+                <div
+                  style={{
+                    width: 500,
+                    height: 600,
+                    border: "1px solid black",
+                    overflowY: "auto",
+                    padding: "10px",
+                  }}
+                >
+                  <ul style={{ listStyle: "none", padding: 0 }}>
+                    {detailList}
+                  </ul>
+                </div>
+                <input
+                  type="text"
+                  value={text}
+                  onChange={onChangeHandler}
+                  placeholder="할 일을 입력하세요"
+                />
+                <button onClick={onClickHandler}>추가하기</button>
+              </div>
+            </main>
+            <footer>
+              <div
+                style={{
+                  height: 100,
+                  backgroundColor: "black",
+                  color: "white",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <h4>Copyright 2022 team-greedy all rights reserved</h4>
+              </div>
+            </footer>
+          </>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+  </body>
+</html>

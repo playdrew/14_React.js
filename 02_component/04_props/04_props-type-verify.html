@@ -14,7 +14,7 @@
 
     <script type="text/babel">
 
-        function PropsVerity({name,favoriteNumber,children}){
+        function PropsVerify({name,favoriteNumber,children}){
             return(
                 <>
                     <h1>제 이름은 {name}입니다.</h1>
@@ -31,7 +31,7 @@
                 해당 컴포넌트에 어떤 props 가 필요한지를 기술함으로서
                 마치 주석처럼 props 타입, 필요여부등을 기술 할 수 있다.
          */
-         PropsVerity.propTypes = {
+         PropsVerify.propTypes = {
             name: PropTypes.string, // name props 속성은 string 이여야 한다.
             favoriteNumber: PropTypes.number.isRequired // favoriteNumber는 숫자이면서 , 반드시 입력해야한다.
         }
@@ -39,8 +39,8 @@
         ReactDOM.createRoot(document.getElementById("root"))
                 .render(
                     [
-                        <PropsVerity name='홍길동' favoriteNumber={7}>텍스트</PropsVerity>,
-                        <PropsVerity name={3}>텍스트</PropsVerity >
+                        <PropsVerify name='홍길동' favoriteNumber={7}>텍스트</PropsVerify>,
+                        <PropsVerify name={3}>텍스트</PropsVerify >
                     ]
                 );
 
