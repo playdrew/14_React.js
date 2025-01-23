@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>reducer-login-form</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/prop-types@15.8.1/prop-types.js"></script>
+</head>
+<body>
+
+    <div id="root"></div>
+    
+    <script type="text/babel">
+
+        const {useReducer} = React;
+
+        // Reducer function
+        function reducer(state, action) {
+            if (action.type === 'setName') {
+                return { ...state, name: action.value };
+            } else if (action.type === 'setNickname') {
+                return { ...state, nickname: action.value };
+            }
+            return state;
+        }
+
+        function Login() {
+            // Initialize reducer with initial state
+            const [state, dispatch] = useReducer(reducer, { name: '', nickname: '' });
+
+            // Handle input changes
+            const handleChange = (e) => {
+                dispatch({ type: e.target.name === 'name' ? 'setName' : 'setNickname', value: e.target.value });
+            };
+
+            return (
+                <>
+                    <label>이름 : </label>
+                    <input 
+                        type="text" 
+                        name="name" 
+                        value={state.name} 
+                        onChange={handleChange} 
+                    />
+                    <br />
+                    <label>닉네임 : </label>
+                    <input 
+                        type="text" 
+                        name="nickname" 
+                        value={state.nickname} 
+                        onChange={handleChange} 
+                    />
+                    <h1>입력한 이름 : {state.name}</h1>
+                    <h1>입력한 닉네임 : {state.nickname}</h1>
+                </>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<Login />);
+    </script>
+
+</body>
+</html>

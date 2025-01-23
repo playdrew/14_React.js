@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>reducer-basic</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/prop-types@15.8.1/prop-types.js"></script>
+</head>
+<body>
+
+    <div id="root"></div>
+    
+    <script type="text/babel">
+
+    // reducer는 state를 보완해보자의 의미를 가집니다.
+
+    // 1. state로만 상태를 관리할 때 예시
+    // const {useState} = React;
+
+    // function Counter(){
+
+    //     const [number,setNumber] = useState({value:0});
+
+    //     return(
+    //         <>
+    //             <h1>Count : {number.value}</h1>
+    //             <button onClick={()=> setNumber({value: number.value-1})}>-1</button>
+    //             <button  onClick={()=> setNumber({value: number.value+1})}>+1</button>
+    //         </>
+    //     )
+    // }
+
+    /*
+        useReducer 는 컴포넌트가 관리해야 할 state 가 많아지게 되면
+        컴포넌트의 할 일이 너무나도 많아지기 때문에
+        주문을 넣게 되면 reducer 가 주문에 따른 상태관리를 대신 해준다.
+    */
+
+    const {useReducer} = React;
+
+    console.log(useReducer); // 첫번째 인자는 함수 reducer, 두번째 인자는 initialArg 값을 전달
+
+    // 외부 함수에서 컴포넌트의 state를 action(주문)에 따라 관리
+    function reducer(state,action){ // 컴포넌트가 아니므로 앞글자 일부로 reducer 라고 했어요 
+        console.log("나 불렀니? 디스패치야?")
+        console.log("state",state);
+        console.log("action",action);
+
+        // action 변수에 주문서가 있음
+        switch(action.type){
+            case 'DECREMENT' :
+                return {value: state.value-1};
+            case 'INCREMENT' :
+                return {value: state.value+1}; 
+            default :
+                return state;
+        }
+    }
+
+    // 컴포넌트
+    function Counter(){
+        
+        // 리듀서는 2가지의 인자를 가지고 있다.
+        // 1. 리듀서 함수(외부함수)
+        // 2. 관리 할 상태(state)
+        console.log("useReducer(reducer,{value:0}",useReducer(reducer,{value:0}));
+
+        const [state,dispatch] = useReducer(reducer,{value:0}); // 디스패치는 reducer에게 값을 넘겨주는 역할을 한다. 디스패쳐가 action이다.
+
+        // useReducer의 목적은 컴포넌트를 더이상 스스로 set(수정)하지 않게
+        // 상태관리에 부담감을 덜어주는 것이다.
+        return(
+            <>
+            <h1>Counter : {state.value}</h1>
+            <button onClick={()=>dispatch({type:'DECREMENT'})}>-1</button>
+            <button onClick={()=>dispatch({type:'INCREMENT'})}>+1</button>
+            </>
+        )
+    }
+    
+    ReactDOM.createRoot(document.getElementById('root')).render(<Counter/>);
+    </script>
+</body>
+</html>

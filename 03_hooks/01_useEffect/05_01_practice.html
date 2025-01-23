@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>clean-up-ex</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/prop-types@15.8.1/prop-types.js"></script>
+</head>
+<body>
+
+    <div id="root"></div>
+    
+    <script type="text/babel">
+    
+    const { useState, useEffect } = React;
+
+    function App() {
+        const [userInput, setUserInput] = useState(""); // prompt에서 입력 받은 값
+        const [inputValue, setInputValue] = useState(""); // input 필드의 값
+        const [startTime, setStartTime] = useState(null); // 타이머 시작 시간
+        const [elapsedTime, setElapsedTime] = useState(0); // 경과 시간
+        const [timerActive, setTimerActive] = useState(false); // 타이머 활성화 여부
+
+        useEffect(() => {
+            const input = prompt("문자를 입력해주세요");
+            setUserInput(input);
+            setStartTime(Date.now()); // 컴포넌트가 처음 렌더링 될 때 타이머 시작
+            setTimerActive(true); // 타이머 활성화
+        }, []); // 처음 렌더링 시 실행
+
+        useEffect(() => {
+            if (timerActive && startTime !== null) {
+                const interval = setInterval(() => {
+                    setElapsedTime(Math.floor((Date.now() - startTime) / 1000)); // 초 단위로 경과 시간 계산
+                }, 1000);
+
+                return () => clearInterval(interval); // 컴포넌트 언마운트 시 인터벌 정리
+            }
+        }, [timerActive, startTime]);
+
+        const handleInputChange = (event) => {
+            setInputValue(event.target.value);
+        };
+
+        const handleSubmit = () => {
+            if (inputValue === userInput) {
+                // 입력 값과 prompt 값이 같으면 타이머 멈추고 경과 시간 alert
+                setTimerActive(false);
+                alert(`정답을 입력한 시간은 ${elapsedTime}초 입니다.`);
+            }
+        };
+
+        return (
+            <>
+                <h1>{userInput}</h1>
+                <input
+                    type="text"
+                    value={inputValue}
+                    onChange={handleInputChange}
+                    placeholder="여기에 입력하세요"
+                />
+                <button onClick={handleSubmit}>Submit</button>
+                <p>경과 시간: {elapsedTime}초</p>
+            </>
+        );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+    </script>
+</body>
+</html>

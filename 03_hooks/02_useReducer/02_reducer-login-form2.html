@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const { useReducer } = React;
+
+      function reducer(state, action) {
+        console.log("바로넘겼을 떄 ", action);
+
+        return { ...state, [action.name]: action.value };
+      }
+
+      function Login() {
+        console.log(
+          useReducer(reducer, {
+            name: "",
+            nick: "",
+          })
+        );
+        const [state, dispatch] = React.useReducer(reducer, {
+          name: "",
+          nick: "",
+        });
+
+        const handleChange = (e) => dispatch(e.target);
+
+        return (
+          <div>
+            이름:
+            <input
+              type="text"
+              name="name"
+              value={state.name}
+              onChange={handleChange}
+            />
+            닉네임:
+            <input
+              type="text"
+              name="nick"
+              value={state.nick}
+              onChange={handleChange}
+            />
+            <p>입력한 이름: {state.name}</p>
+            <p>입력한 닉네임: {state.nick}</p>
+          </div>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<Login />);
+    </script>
+  </body>
+</html>
