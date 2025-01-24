@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>optimization</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/prop-types@15.8.1/prop-types.js"></script>
+</head>
+<body>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+        const {useState,useMemo} = React;
+        console.log(useMemo);
+
+        const hardCalculator = (num) => {
+            console.log('오래 걸리는 계산기 호출됨')
+            for(let i = 0 ; i< 999999999 ; i++){
+                
+            }
+            return num + 10000;
+        }
+
+        const easyCalculator = (num) => {
+            console.log('시간이 오래 걸리지 않는 계산기 호출됨...,')
+            return num + 10000;
+        }
+
+        function App(){
+
+            // 리랜더링시 마다 지역변수 초기화로 인한 지연 상황 발생
+
+            /*
+                간단한 작업을 할 때도 시간이 오래 걸리는 작업과 함께 수행하기에는
+                비효율적이기 때문에 hardCalculator 연산을 통해 나온 값을 메모리
+                상에 저장(캐싱)해두고, 그 값이 변경되지 않을 때는 다시 렌더링(연산)
+                이 되지 않도록 한다.
+                연산으로 얻은 값 자체를 메모라이즈(메모리상에 저장)하기 위해
+                사용되는 hooks이 useMemo 이다.
+            */ // 메모는 값을 저장 함수를 저장하지 않음
+            const [hardNumber , setHardNumber] = useState(0);
+            const [easyNumber , setEasyNumber] = useState(0);
+
+            const hardSum = useMemo(()=>{
+                console.log('useMemo 어려운 계산기');
+                return hardCalculator(hardNumber);
+            },[hardNumber]); // [] <- 의존성배열 
+
+            const easySum =  useMemo(()=>{
+                console.log('useMemo 어려운 계산기');
+                return easyCalculator(easyNumber);
+            },[easyNumber]);
+
+            return(
+                <>
+                    <h3>시간이 오래 걸리는 계산기</h3>
+                    <input 
+                        type="number"
+                        value={hardNumber}
+                        onChange={(e) => setHardNumber(parseInt(e.target.value))}
+                    />
+                    <span>+10000 = {hardSum}</span>
+                    <h3>시간이 오래 걸리지 않는 계산기</h3>
+                    <input 
+                        type="number"
+                        value={easyNumber}
+                        onChange={(e) => setEasyNumber(parseInt(e.target.value))}
+                    />
+                    <span>+10000 = {easySum}</span>
+                </>
+
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root'))
+                .render(<App/>);
+    </script>
+    
+</body>
+</html>
