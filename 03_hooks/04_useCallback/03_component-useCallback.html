@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>component-useCallback</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/prop-types@15.8.1/prop-types.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        const {useState, useEffect , useCallback} = React;
+
+        function App(){
+
+            const [size,setSize] = useState(200);
+            const [isDark,setIsDark] = useState(false);
+            
+            // 자식 컴포넌트에 전달해줄 값
+            // const squareStyle = {
+            //     backgroundColor : 'red' , 
+            //     width : `${size}px`,
+            //     height : `${size}px`
+            // } isDark를 누르면 squareStyle이 다시 초기화 되는 현상을 막기 위해서다
+
+            const squareStyle = useCallback(()=>{
+                // square 함수가 호출되면 return 할 객체 정의
+                return {
+                     backgroundColor : 'red' , 
+                     width : `${size}px`,
+                     height : `${size}px`
+                }
+            },[size]); // 사이즈가 변할 때만 호출한다.
+            
+            // const style { backgorundColor : isDark ? 'black' : 'white'} ; div style = {style}
+            // style은 attribute 속성이므로 첫번째 중괄호는 값을 집어넣겠다 두번째는 객체를 의미해요
+            return(
+                <>
+                <div style={{backgroundColor: isDark ? 'black' : 'white'}}>
+                    <input 
+                        type="range"
+                        min="100"
+                        max="300"
+                        onChange={(e)=> setSize(e.target.value)}
+                        />
+                        <button onClick ={() => setIsDark(!isDark)}>{isDark.toString()}</button>
+                        <Square squareStyle = {squareStyle}/>
+                </div>
+                </>
+            );
+        }
+
+        function Square({squareStyle}){
+            //console.log("props",props)
+            const [style, setStyle] = useState({});
+
+            // 생성될때 한번 업데이트 될때 한번 2번
+            console.log('자식 업데이트 확인용 구문')
+
+            /*
+                부모인 App 컴포넌트가 업데이트 되어 자식인 Square도 리렌더링이 될때 ,
+                부모가 주는 props 에 변화가 생길 때 자식도 어쩔 수 없이 리렌더링이 된다,
+            */
+            useEffect(()=>{
+                console.log('style 변경!!');
+                setStyle(squareStyle());
+            },[squareStyle])
+            return (
+                <div style={style}></div>
+            )
+
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App/>)
+    </script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rendering-problem</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/prop-types@15.8.1/prop-types.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        const {useState} = React;
+
+        function App(){
+
+            const [number,setNumber] = useState(0);
+
+            console.log('App 컴포넌트 렌더링 됨');
+            // state가 바뀔때마다 리렌더링됨 업데이트
+            // 값만 추적해서 저장하고 싶음
+            // ref는 href 링크같은 느낌
+
+            const increase = () => setNumber(number+1);
+
+            return(
+                <>
+                    <h1>Number : {number}</h1>
+                    <button onClick = {increase}>+1</button>
+                </>
+            )
+
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App/>)
+    </script>
+
+</body>
+</html>

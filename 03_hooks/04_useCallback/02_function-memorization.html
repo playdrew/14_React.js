@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>function-memorization</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>problem</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/prop-types@15.8.1/prop-types.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        const {useState,useEffect,useCallback} = React;
+
+        //console.log(useCallback); // 첫번째 인자는 함수 두번째 인자는 deps 의존성 배열 
+
+        function App(){
+
+            const [number,setNumber] = useState(0); 
+            const [toggle,setToggle] = useState(false);
+
+            // printNumber 함수가 불필요하게 계속 생성되는 문제점을 개선
+            // useCallBack 으로 함수 자체를 메모리에 저장 해보자
+            const printNumber = useCallback(()=>{
+                console.log('현재 number state : ', number);
+            },[number]); // 의존성 배열을 빈 배열로 두게 되면, 마운트(생성)시점에 
+            // 한 번 지역 변수 초기화를 위해 사용하고 나서 함수는 새롭게 정의되지
+            // 않기 때문에 number의 초기값인 0만 출력이 되게 된다.
+
+
+            useEffect(()=>{
+                console.log('printNumber 값 변화 인지됨...')
+            },[printNumber])
+
+            return(
+                <>
+                    <input 
+                        type="number"
+                        value={number} 
+                        onChange={e=>setNumber(e.target.value)}
+                        />
+                    <button onClick={()=> setToggle(!toggle)}>{String(toggle)}</button>
+                    <br/>
+                    <button onClick={printNumber}>PrintNumberState</button>
+                    </>
+            );
+
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+    </script>
+</body>
+</html>
+</body>
+</html>
