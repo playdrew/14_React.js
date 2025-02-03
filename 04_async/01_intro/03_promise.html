@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>promise</title>
+</head>
+<body>
+    <script>
+        /*
+            promise 는 콜백 지옥과 같은 코드를 만들지 않기 위해 
+            (비동기 통신간에 순서를 정하기 쉽게) 하는 방법으로서
+            ES6 버전에서 등장하였다.
+        */
+
+        // 콜백지옥을 피하기 위해 두번째 인자에 함수를 받지 않음
+        function increase(number){
+
+            /*
+                promise 객체를 만드는 이유
+                1. 비동기 처리 함수를 실행시 성공과 실패에 대한 처리를 
+                용이하게 resolve(성공) 및 reject(실패) 를 제공한다.
+                2. promise 객체가 제공하는 메소드를 사용하기 위함
+            */
+            const promise = new Promise((resolve,reject)=>{
+                setTimeout(()=>{
+                    const result = number + 10;
+
+                    if(result > 50){
+                        const error = new Error("숫자가 너무 큽니다!!");
+                        // 비동기 처리가 실패했을때 사용하는 reject(거절)
+                        return reject(error); 
+                    }
+
+                    // 성공 시에 사용하는 resolve(해소, 성공)
+                    resolve(result);
+                },1000);
+            });     
+            return promise;   
+        }
+        /*
+            increase 함수 호출 후에는 promise 객체가 return 된다.
+            이 promise는 resolve 함수에 던져진 인수를 기억하며 
+            promise를 통해 then 함수를 호출해서 던져지는 콜백함수의
+            인수로 기억했던 resolve 함수의 인수를 넣어준다.
+        */
+        console.log(increase(0));
+
+        // 메소드 체이닝 방식
+        increase(0)
+            .then(number => {
+                // promise 객체 내부의 resolve 가 호출이 되고
+                // 결과가 담기고 난 뒤 then 이 실행되는 시점이다.
+                console.log(number)
+                return increase(number);
+            })
+            .then(number => {
+                console.log(number);
+                return increase(number);
+            })
+            .then(number => {
+                console.log(number);
+                return increase(number);
+            })
+            .then(number => {
+                console.log(number);
+                return increase(number);
+            })
+            .then(number => {
+                console.log(number);
+                return increase(number);
+            })
+            .catch(e =>{
+                // reject 에 들어간 에러 객체를 콜백함수의 인수로 넣어준다
+                console.log(e,'발생!!!!!');
+            })
+            .finally(()=>{
+                // 에러가 발생하더라도 동작할 구문 작성
+                console.log('finally 블럭 실행됨...')
+            })
+    </script>
+</body>
+</html>

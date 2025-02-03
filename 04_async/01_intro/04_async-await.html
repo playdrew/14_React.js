@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>async-await</title>
+</head>
+<body>
+    <script>
+        /*
+            promise 객체의 then 절이 아닌 , 조금 더 쉽게 사용하기 위해
+            async/await 문법이 있다.
+        */
+          function increase(number){
+
+            const promise = new Promise((resolve,reject)=>{
+                setTimeout(()=>{
+                    const result = number + 10;
+
+                    if(result > 50){
+                        const error = new Error("숫자가 너무 큽니다!!");
+                        return reject(error); 
+                    }
+                    resolve(result);
+                },1000);
+            });     
+            return promise;   
+        }
+
+        /*
+            await 의 기능
+            1. await 가 달린 함수의 결과인 promise 에 담긴 resolve 결과를
+               반환하게 된다.
+            2. await 가 달린 비동기처리들을 동기식으로 동작하게 된다.        
+        */
+       // async 와 await는 반드시 함께 존재해야 합니다.
+        async function run(){
+            try{
+                let result = await increase(0); // increase 비동기 함수 run에서 호출
+                console.log(result); // Promise 가 출력됨 async와 await를 함께 사용하면 10이 됨 
+
+                result = await increase(result);
+                console.log(result);
+
+                result = await increase(result);
+                console.log(result);
+
+                result = await increase(result);
+                console.log(result);
+
+                result = await increase(result);
+                console.log(result);
+
+                result = await increase(result);
+                console.log(result);
+
+            } catch(e){
+                console.log(e,'발생!!!!!!');
+            }
+        }
+        run();
+
+        // Promise 객체 반환 then이나 async await로 값을 꺼내는게 관건
+    </script>
+</body>
+</html>

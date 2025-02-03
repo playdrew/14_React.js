@@ -3,41 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>useEffect-cleanup</title>
+    <title>fetch-async-await</title>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://unpkg.com/prop-types@15.8.1/prop-types.js"></script>
 </head>
 <body>
-
     <div id="root"></div>
-    
     <script type="text/babel">
 
-        const {useState,useEffect} = React;
+        function callAPI(){
+           fetch('https://jsonplaceholder.typicode.com/users')
+           .then(res => res.json()) // json 문자열 타입의 객체 (문자열을 자바스크립트 객체로 변환)
+           .then(json => {console.log(json)}) 
 
-        function Counter(){
+        }
 
-            const [number,setNumber] = useState(0); // 초기값은 0
+        function App(){
 
-            useEffect(()=>{
-                console.log('effect 동작함!!!');
-
-                // useEffect return 되는 함수를 정리함수라고 한다.
-                return () => console.log('청소기 동작')
-            }) 
-
-            return (
-                <>
-                    <h1>Number : {number}</h1>
-                    <button onClick = {()=> setNumber(number+1)}>+1</button>
-                </>
-            )
+            const onClickHandler = () => {
+                callAPI();
+            }
+            return <button onClick={onClickHandler}>API 요청!!</button>
         }
 
         ReactDOM.createRoot(document.getElementById('root'))
-                .render(<Counter/>);
+                .render(<App/>)
     </script>
 </body>
 </html>
