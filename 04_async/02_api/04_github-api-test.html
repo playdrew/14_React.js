@@ -65,6 +65,8 @@
                 //         console.log(res)
                 //         setImgUrl(res.data[imageName]);
                 //     }
+
+                // 3. async
                 
                 try {
                     const response = await axios.get('https://api.github.com/emojis');
@@ -81,23 +83,24 @@
                 }
             }
 
-            // async function callImage() {
-            //     try {
-            //         const response = await fetch("https://api.github.com/emojis");
+                // 3. async
+                // async function callImage() {
+                //     try {
+                //         const response = await fetch("https://api.github.com/emojis");
 
-            //         const json = await response.json();
+                //         const json = await response.json();
 
-            //         console.log(json);
+                //         console.log(json);
 
-            //         setImgUrl(json[imageName]);
-            //     } catch (error) {
-            //         console.error("에러 발생:", error);
-            //     }
-            //     }
+                //         setImgUrl(json[imageName]);
+                //     } catch (error) {
+                //         console.error("에러 발생:", error);
+                //     }
+                //     }
 
-            // const onClickHandler = () => {
-            //     callImage();
-            //     };
+                // const onClickHandler = () => {
+                //     callImage();
+                //     };
 
             return (
                 <>
