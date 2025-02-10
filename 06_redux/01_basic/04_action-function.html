@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>action-function</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/redux@4.2.0/dist/redux.js"></script>
+    <script src="https://unpkg.com/react-redux@8.0.4/dist/react-redux.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+        const {Provider, useSelector, useDispatch} = ReactRedux;
+        const {createStore} = Redux;
+
+        /* 
+            Ducks 패턴에 의하면 초기값, 액션, 리듀서를 관련 있는 State 별로
+            modules 라는 패키지 하위에 관리한다.
+            ex) src/modules/MenuModules.js/ 초기값, 액션, 리듀서 
+        */
+
+        // CountModule.js
+        /*-------------------------------------------------------*/
+
+        // 1. 초기값
+        const initCount = 0;
+
+        // 2. 액션
+        // 액션은 함수 형태로 재사용 할 수 있도록 작성하여 dispatch 호출 시
+        // 인자로 전달 할 값을 반환하는 함수를 만들어 둔다.
+
+        // 액션 타입을 상수로 정의해둔다. 접두사를 붙이는 이유는
+        // 다른 모듈과 액션 값이 겹치지 않게 하기 위해
+        const INCREMENT = 'count/INCREMENT';
+        const DECREMENT = 'count/DECREMENT';
+
+        // 액션 함수 정의
+        const increase = () => (
+            {
+                type: INCREMENT,
+                payload : {incrementValue : 1}
+            }
+        )
+        const decrease = () => (
+            {
+                type : DECREMENT,
+                payload : {decrementValue : 1}
+            }
+        )
+
+        // 3. [1,2] state, action 정의 완료. 이제 reducer
+        function reducer(state = initCount, {type, payload}) {
+            switch(type) {
+                case INCREMENT : 
+                    return state + payload.incrementValue;
+                case DECREMENT : 
+                    return state - payload.decrementValue;
+                default : return state;
+            }
+        }
+        /*-------------------------------------------------------*/
+
+
+        // src/pages/Count.js 
+        /*-------------------------------------------------------*/
+
+        function Count() {
+
+            const dispatch = useDispatch();
+
+            const increaseCount = () => {
+                dispatch(increase());
+            }
+
+            const decreaseCount = () => {
+                dispatch(decrease());
+            }
+
+            return (
+                <>
+                    <h1>Count : </h1>
+                    <button onClick={increaseCount}>+ 1</button>
+                    <button onClick={decreaseCount}>- 1</button>
+                </>
+            );
+        }
+        /*-------------------------------------------------------*/
+
+
+        
+        // src/Store.js
+        /*-------------------------------------------------------*/
+        const store = createStore(
+            reducer,
+            window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+        )
+        /*-------------------------------------------------------*/
+
+        
+
+        // src/index.js
+        /*-------------------------------------------------------*/
+        ReactDOM.createRoot(document.getElementById('root'))
+                .render(
+                    <Provider store={store}>
+                        <App/>    
+                    </Provider>
+                )
+        /*-------------------------------------------------------*/
+
+
+
+    </script>
+
+</body>
+</html>
