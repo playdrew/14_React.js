@@ -17,26 +17,29 @@
     <script type="text/babel">
 
     
-    // 액션 ----> 미들웨어 ----> 리듀서 ----> 스토어
-    // 특정한 조건에 따라서 액션을 무시하거나 , 추가적인 작업 진행,
-    // 로깅 , 함수 호출등을 할 수 있게 된다.
-    // 특히 가장 중요한 것은 비동기 처리이며, 가장 많이 쓰는
-    // 미들웨어는 redux-thunk, reducx-saga 등이 있다.
-    
-    // 미들웨어의 형태
-    // const middleware = store => next => action => {
-    //     // 이 부분이 middle ware가 수행할 구문을 작성하는 
-    //     // 영역
-    // }
+        /*
+            액션 -----> 미들웨어 -----> 리듀서 -----> 스토어
 
-    // 위에 식의 의미
-    // function middleware(store){
-    //     return function(next){
-    //         return function(action){
-    //             // 미들웨어 수행영역
-    //         }
-    //     }
-    // }
+            특정한 조건에 따라서 액션을 무시하거나, 추가적인 작업 진행,
+            로깅, 함수 호출 등을 할 수 있게 된다.
+            특히 가장 중요한 것은 비동기 처리이며, 가장 많이 쓰는
+            미들웨어는 redux-thunk, redux-saga 등이 있다.
+        */
+
+        // 미들웨어의 형태
+        // const middleware = store => next => action => {
+        //     // 이 부분이 middleware 가 수행할 구문을 작성하는
+        //     // 영역
+        // }
+
+        // 위에 식의 의미
+        // function middleware(store) {
+        //     return function(next) {
+        //         return function(action) {
+        //             // 미들웨어 수행 영역
+        //         }
+        //     }
+        // }
 
     // 미들웨어 만들기
     const loggingMiddleware = store => next => action => {
@@ -65,6 +68,19 @@
      [INCREMENT]:(amount = 1) => ({incrementValue : amount}),
      [DECREMENT]:(amount = 1) => ({decrementValue : amount})
      });
+
+     // actions 객체는 아래와 같은 구조입니다:
+    {
+        count: {
+            increase: function() { ... }, // INCREMENT 액션 생성 함수
+            decrease: function() { ... }  // DECREMENT 액션 생성 함수
+        }
+    }
+
+    // 구조 분해 할당을 풀면 다음과 같습니다:
+    const count = actions.count; // actions 객체에서 count 객체를 얻습니다.
+    const increase = count.increase; // count 객체에서 increase 함수(액션)를 얻습니다.
+    const decrease = count.decrease; // count 객체에서 decrease 함수(액션)를 얻습니다.
     */
     const {count : {increase, decrease}} = createActions({
             [INCREMENT] : (amount = 1) => ({incrementValue : amount}),
