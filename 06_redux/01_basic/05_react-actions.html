@@ -41,6 +41,16 @@
         // console.log(decrease());
 
         /* 2-2. createActions 사용해서 액션들 한 번에 다루기 */
+        /*
+            const actions = createActions({
+            [INCREMENT] : (amount = 1) => ({incrementValue : amount}),
+            [DECREMENT] : (amount = 1) => ({decrementValue : amount})
+            });
+
+        const increase = actions.count.increase;
+        const decrease = actions.count.decrease;
+ 
+        */
         // const actions = createActions({
         const {count : {increase, decrease}} = createActions({
             [INCREMENT] : (amount = 1) => ({incrementValue : amount}),
